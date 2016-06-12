@@ -6,7 +6,7 @@ It works using both neural networks, and genetic evolution. It starts knowing no
 
 ## Setting up the project
 
-Since this project relies on [2048](https://github.com/gabrielecirulli/2048) and [Brainwave](https://github.com/zefman/Brainwave), I didn't want to include their code directly into my repository (which would make it look like it is mine). Instead, I made them submodules.
+Since this project relies on [2048](https://github.com/gabrielecirulli/2048) and [Brainwave](https://github.com/zefman/Brainwave), I didn't want to include their code directly into my repository (which would make it look like it is mine). Instead, I made submodules.
 
 #### Step 0, prerequisites
 
@@ -18,12 +18,14 @@ It is necessary you have git installed on your machine. Using github's `Download
 
 Clone the repository with :
 ```
-git clone https://github.com/FliiFe/genetic-2048.git
+git clone --recursive https://github.com/FliiFe/genetic-2048.git
 ```
 or, if you have an SSH key :
 ```
-git clone git@github.com:FliiFe/genetic-2048.git
+git clone --recursive git@github.com:FliiFe/genetic-2048.git
 ```
+
+***Don't forget to include the `--recursive` part in the clone command ! If you don't, you won't get the submodules !***
 
 #### Step 2, install dependencies
 
