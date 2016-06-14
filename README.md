@@ -25,13 +25,18 @@ or, if you have an SSH key :
 git clone --recursive git@github.com:FliiFe/genetic-2048.git
 ```
 
-***Don't forget to include the `--recursive` part in the clone command ! If you don't, you won't get the submodules !***
+***Don't forget to include the `--recursive` part in the clone command ! If you don't, you won't get the submodules ! If you forgit to include it, please refer to step 2***
 
-#### Step 2, install dependencies
+#### Step 2, install dependencies and retrieve submodules
 
-You can install the dependencies with
+You can install the node dependencies with
 ```
 npm install
+```
+
+And you can get the submodules by running this if you did not include `--recursive` in your clone command :
+```
+git submodule update --init
 ```
 
 #### Step 3, Install `grunt`
@@ -53,7 +58,11 @@ You can run the project with `grunt`, without arguments :
 grunt
 ```
 
-**The server will run on localhost, on port 8080**. You can change this in the Gruntfile
+Once you have started the server, all file changes will trigger a build and a reload on the webpage.
+
+If you want to export the project, just run `grun build` and export the build directory.
+
+**The server will run on localhost, on port 8080**. You can change the port in the Gruntfile.
 
 If you want to build without serving files, use
 ```

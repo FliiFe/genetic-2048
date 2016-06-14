@@ -8,7 +8,7 @@ module.exports = function (grunt) {
                     port: 8080,
                     hostname: '*',
                     base: './build/',
-                    keepalive: true
+                    livereload: true
                 }
             }
         },
@@ -37,16 +37,28 @@ module.exports = function (grunt) {
                 src: ['*.js'],
                 dest: 'build/js/'
             }
+        },
+        watch: {
+            scripts: {
+                files: ['src/**'],
+                tasks: ['build'],
+                options: {
+                    livereload: true,
+                    spawn: false
+                }
+            }
         }
     });
 
     grunt.registerTask('build', 'Build the project', ['copy:main', 'copy:js', 'copy:html', 'copy:brainwave']);
 
-    grunt.registerTask('default', ['build', 'connect']);
+    grunt.registerTask('default', ['build', 'connect', 'watch']);
     grunt.registerTask('serve', ['connect']);
 
     grunt.loadNpmTasks('grunt-contrib-clean');
     grunt.loadNpmTasks('grunt-contrib-connect');
     grunt.loadNpmTasks('grunt-contrib-copy');
+    grunt.loadNpmTasks('grunt-contrib-watch');
+    grunt.loadNpmTasks('grunt-reload');
 
 };
