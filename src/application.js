@@ -18,7 +18,7 @@ function getGrid(){
 
 // Movement from 0 to 3 (inclusive). Will be floored.
 // 0 = up, 2 = down
-// 1 = Right, 3 = left
+// 1 = right, 3 = left
 function move(mv){
     gameManager.inputManager.emit('move', Math.floor(mv))
 }
