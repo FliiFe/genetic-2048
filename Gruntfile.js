@@ -41,7 +41,7 @@ module.exports = function (grunt) {
         watch: {
             scripts: {
                 files: ['src/**'],
-                tasks: ['build'],
+                tasks: ['copy:js', 'copy:html'],
                 options: {
                     livereload: true,
                     spawn: false

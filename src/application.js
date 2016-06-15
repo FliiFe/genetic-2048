@@ -16,5 +16,9 @@ function getGrid(){
     return grid;
 }
 
-var network = new Brainwave.Network(16, 1, 2, 6);
-
+// Movement from 0 to 3 (inclusive). Will be floored.
+// 0 = up, 2 = down
+// 1 = Right, 3 = left
+function move(mv){
+    gameManager.inputManager.emit('move', Math.floor(mv))
+}
