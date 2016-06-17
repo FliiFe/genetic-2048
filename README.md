@@ -25,7 +25,7 @@ or, if you have an SSH key :
 git clone --recursive git@github.com:FliiFe/genetic-2048.git
 ```
 
-***Don't forget to include the `--recursive` part in the clone command ! If you don't, you won't get the submodules ! If you forgit to include it, please refer to step 2***
+***Don't forget to include the `--recursive` part in the clone command ! If you don't, you won't get the submodules ! If you forgot to include it, please refer to step 2***
 
 #### Step 2, install dependencies and retrieve submodules
 
