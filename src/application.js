@@ -38,6 +38,7 @@ function tryAgain() {
     window.gameManager.restart();
 }
 
+var delay = 5;
 var popSize = 20;
 var networks = [];
 var genetics = undefined;
@@ -73,7 +74,7 @@ var previousThreeGrids = [0, 1, 2];
 var bestTile = 0;
 var bestGenome = undefined;
 
-setInterval(function () {
+function run() {
     if (window.gameManager.isGameTerminated() || (arraysEquality(previousThreeGrids[0], previousThreeGrids[1], previousThreeGrids[2]))) {
         genetics.population[networkIndex].fitness = window.gameManager.score;
         bestTile = Math.max(bestTile, getBestTileFromGrid(getGrid()));
@@ -96,4 +97,6 @@ setInterval(function () {
     move(movement);
     previousThreeGrids.splice(0, 1);
     previousThreeGrids.push(getGrid());
-}, 15);
+    setTimeout(run, delay);
+}
+setTimeout(run, 20);
