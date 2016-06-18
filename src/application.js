@@ -16,7 +16,12 @@ function getGrid() {
     return grid;
 }
 
-function getBestTileFromGrid(grid){
+// Might be hacky, but works.
+function arraysEquality(a1, a2, a3) {
+    return JSON.stringify(a1) === JSON.stringify(a2) && JSON.stringify(a1) === JSON.stringify(a3);
+}
+
+function getBestTileFromGrid(grid) {
     return Math.max.apply(this, grid);
 }
 
@@ -24,10 +29,12 @@ function getBestTileFromGrid(grid){
 // 0 = up, 2 = down
 // 1 = right, 3 = left
 function move(mv) {
-    window.gameManager.inputManager.emit('move', Math.floor(mv));
+    var max = Math.max.apply(this, mv);
+    var move = mv.indexOf(max);
+    window.gameManager.inputManager.emit('move', Math.floor(move));
 }
 
-function tryAgain(){
+function tryAgain() {
     window.gameManager.restart();
 }
 
@@ -38,7 +45,7 @@ var genetics = undefined;
 function initializePopulation() {
 
     for (var i = 0; i < popSize; i++) {
-        networks.push(new Brainwave.Network(16, 1, 4, 6));
+        networks.push(new Brainwave.Network(16, 4, 16, 16));
     }
 
     genetics = new Brainwave.Genetics(popSize, networks[0].getNumWeights());
@@ -48,7 +55,7 @@ function initializePopulation() {
     }
 }
 
-function evolve(){
+function evolve() {
 
 
     genetics.epoch(genetics.population);
@@ -62,12 +69,12 @@ initializePopulation();
 
 var networkIndex = 0;
 var generation = 0;
-var previousThreeMoves = [0, 1, 2];
+var previousThreeGrids = [0, 1, 2];
 var bestTile = 0;
 var bestGenome = undefined;
 
-setInterval(function(){
-    if(window.gameManager.isGameTerminated() || (previousThreeMoves[0] === previousThreeMoves[1] && previousThreeMoves[0] === previousThreeMoves[2])){
+setInterval(function () {
+    if (window.gameManager.isGameTerminated() || (arraysEquality(previousThreeGrids[0], previousThreeGrids[1], previousThreeGrids[2]))) {
         genetics.population[networkIndex].fitness = window.gameManager.score;
         bestTile = Math.max(bestTile, getBestTileFromGrid(getGrid()));
         //bestGenome = genetics.sortGenomes(genetics.population)[0];
@@ -75,7 +82,7 @@ setInterval(function(){
         networkIndex++;
         tryAgain();
     }
-    if(networkIndex >= popSize){
+    if (networkIndex >= popSize) {
         genetics.calcStats();
         var avg = genetics.averageFitness;
         console.log('Average: ' + avg);
@@ -83,8 +90,10 @@ setInterval(function(){
         networkIndex = 0;
         generation++;
     }
-    var movement = networks[networkIndex].run(getGrid())[0]*4;
+    var movement = networks[networkIndex].run(getGrid()).map(function (m) {
+        return 4 * m;
+    });
     move(movement);
-    previousThreeMoves.splice(0, 1);
-    previousThreeMoves.push(movement);
-}, 5);
+    previousThreeGrids.splice(0, 1);
+    previousThreeGrids.push(getGrid());
+}, 15);
