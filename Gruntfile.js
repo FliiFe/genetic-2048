@@ -53,6 +53,13 @@ module.exports = function (grunt) {
     grunt.registerTask('build', 'Build the project', ['copy:main', 'copy:js', 'copy:html', 'copy:brainwave']);
 
     grunt.registerTask('default', ['build', 'connect', 'watch']);
+    grunt.registerTask('statsServer', 'Run a server to show stats', function () {
+        setTimeout(function () {
+            require('./stats.js').runServer();
+        }, 10);
+    });
+
+    grunt.registerTask('stats', ['build', 'connect', 'statsServer', 'watch'])
     grunt.registerTask('serve', ['connect']);
 
     grunt.loadNpmTasks('grunt-contrib-clean');

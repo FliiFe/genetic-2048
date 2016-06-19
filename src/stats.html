@@ -1,0 +1,104 @@
+<head>
+    <!-- Plotly.js -->
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+    <style>
+        #plot {
+            width: 100%;
+            height: 100%;
+        }
+
+        html,
+        body {
+            height: 100%;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div id="plot"></div>
+
+    <script src="http://localhost:3000/socket.io/socket.io.js"></script>
+    <script>
+        var data = [];
+        var socket = io('http://localhost:3000');
+        socket.on('avgs', function(content) {
+            data = JSON.parse(content);
+        });
+
+        setInterval(function() {
+            var plot = document.getElementById('plot');
+
+            function range(a, b, step) {
+                var A = [];
+                if (typeof a == 'number') {
+                    A[0] = a;
+                    step = step || 1;
+                    while (a + step <= b) {
+                        A[A.length] = a += step;
+                    }
+                } else {
+                    var s = 'abcdefghijklmnopqrstuvwxyz';
+                    if (a === a.toUpperCase()) {
+                        b = b.toUpperCase();
+                        s = s.toUpperCase();
+                    }
+                    s = s.substring(s.indexOf(a), s.indexOf(b) + 1);
+                    A = s.split('');
+                }
+                return A;
+            }
+
+            function averageEvery(x, array) {
+                var result = [x];
+                for (var i = 0; i < Math.floor(array.length / x); i++) {
+                    var avg = array.slice(i * x, i * x + x).reduce(function(prev, cur) {
+                        return prev + cur;
+                    }) / x;
+                    result.push(avg);
+                }
+                return result;
+            }
+
+            var data2 = averageEvery(40, data);
+            data2.splice(1, 0, 0);
+
+            var trace1 = {
+                x: range(1, data.length, 1),
+                y: data,
+                type: 'scatter',
+                line: {
+                    width: 0.2,
+                    shape: 'spline'
+                },
+                hoverinfo: "none"
+            };
+            var avgrange = range(data2[0] / 2, data.length, data2[0]);
+            avgrange.splice(0, 0, 0);
+            avgrange.push(data.length - 1);
+            var avgs = data2.slice(1);
+            avgs.push(averageEvery(data2[0], data.slice(data.length - data2[0]))[1]);
+            var trace2 = {
+                x: avgrange,
+                y: avgs,
+                type: 'scatter',
+                line: {
+                    width: 1.5,
+                    shape: 'spline'
+                },
+                mode: 'lines',
+                hoverinfo: "y"
+            };
+
+
+            var traces = [trace1, trace2];
+
+            var layout = {
+                title: 'Average fitness per population over generations',
+                showlegend: false
+            }
+
+            Plotly.newPlot(plot, traces, layout);
+        }, 1000);
+    </script>
+</body>

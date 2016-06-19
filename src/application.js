@@ -16,6 +16,13 @@ function getGrid() {
     return grid;
 }
 
+function showAndSendAverage(avg){
+    console.log('Average: ' + avg);
+    if(typeof socket != undefined){
+        socket.emit('avgs', JSON.stringify(avgs));
+    }
+}
+
 // Might be hacky, but works.
 function arraysEquality(a1, a2, a3) {
     return JSON.stringify(a1) === JSON.stringify(a2) && JSON.stringify(a1) === JSON.stringify(a3);
@@ -39,7 +46,7 @@ function tryAgain() {
 }
 
 var delay = 4;
-var popSize = 40;
+var popSize = 10;
 var networks = [];
 var genetics = undefined;
 
@@ -88,8 +95,8 @@ function run() {
     if (networkIndex >= popSize) {
         genetics.calcStats();
         var avg = genetics.averageFitness;
-        console.log('Average: ' + avg);
         avgs.push(avg);
+        showAndSendAverage(avg);
         evolve();
         networkIndex = 0;
         generation++;
