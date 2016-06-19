@@ -10,6 +10,13 @@ module.exports = function (grunt) {
                     base: './build/',
                     livereload: true
                 }
+            },
+            nolivereload: {
+                options: {
+                    port: 8080,
+                    hostname: '*',
+                    base: './build/'
+                }
             }
         },
         copy: {
@@ -52,19 +59,20 @@ module.exports = function (grunt) {
 
     grunt.registerTask('build', 'Build the project', ['copy:main', 'copy:js', 'copy:html', 'copy:brainwave']);
 
-    grunt.registerTask('default', ['build', 'connect', 'watch']);
+    grunt.registerTask('default', ['clean', 'build', 'connect:server', 'watch']);
     grunt.registerTask('statsServer', 'Run a server to show stats', function () {
         setTimeout(function () {
-            require('./stats.js').runServer();
+            require('./stats.js').runServer()
         }, 10);
     });
 
-    grunt.registerTask('stats', ['build', 'connect', 'statsServer', 'watch'])
-    grunt.registerTask('serve', ['connect']);
+    grunt.registerTask('stats', ['clean', 'build', 'connect:nolivereload', 'statsServer', 'keepalive'])
+    grunt.registerTask('serve', ['connect:server']);
 
     grunt.loadNpmTasks('grunt-contrib-clean');
     grunt.loadNpmTasks('grunt-contrib-connect');
     grunt.loadNpmTasks('grunt-contrib-copy');
     grunt.loadNpmTasks('grunt-contrib-watch');
+    grunt.loadNpmTasks('grunt-keepalive');
 
 };

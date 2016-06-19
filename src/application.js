@@ -18,9 +18,8 @@ function getGrid() {
 
 function showAndSendAverage(avg){
     console.log('Average: ' + avg);
-    if(typeof socket != undefined){
-        socket.emit('avgs', JSON.stringify(avgs));
-    }
+    //If stats server is not running, socket is an object with emit being an empty function.
+    socket.emit('avgs', JSON.stringify(avgs));
 }
 
 // Might be hacky, but works.

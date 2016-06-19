@@ -24,11 +24,15 @@
         var socket = io('http://localhost:3000');
         socket.on('avgs', function(content) {
             data = JSON.parse(content);
+            recalculate();
+            //TODO: Keep zoom after redraw ?
+            Plotly.redraw(plot);
         });
 
-        setInterval(function() {
-            var plot = document.getElementById('plot');
-
+        var plot = document.getElementById('plot');
+        var layout = {};
+        var traces = [];
+        function recalculate() {
             function range(a, b, step) {
                 var A = [];
                 if (typeof a == 'number') {
@@ -68,7 +72,7 @@
                 y: data,
                 type: 'scatter',
                 line: {
-                    width: 0.2,
+                    width: 0.5,
                     shape: 'spline'
                 },
                 hoverinfo: "none"
@@ -91,14 +95,14 @@
             };
 
 
-            var traces = [trace1, trace2];
+            traces = [trace1, trace2];
 
-            var layout = {
+            layout = {
                 title: 'Average fitness per population over generations',
                 showlegend: false
             }
+        }
 
-            Plotly.newPlot(plot, traces, layout);
-        }, 1000);
+        Plotly.newPlot(plot, traces, layout);
     </script>
 </body>
