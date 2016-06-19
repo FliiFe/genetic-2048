@@ -38,15 +38,15 @@ function tryAgain() {
     window.gameManager.restart();
 }
 
-var delay = 5;
-var popSize = 20;
+var delay = 4;
+var popSize = 40;
 var networks = [];
 var genetics = undefined;
 
 function initializePopulation() {
 
     for (var i = 0; i < popSize; i++) {
-        networks.push(new Brainwave.Network(16, 4, 16, 16));
+        networks.push(new Brainwave.Network(16, 4, 50, 100));
     }
 
     genetics = new Brainwave.Genetics(popSize, networks[0].getNumWeights());
@@ -73,6 +73,8 @@ var generation = 0;
 var previousThreeGrids = [0, 1, 2];
 var bestTile = 0;
 var bestGenome = undefined;
+// For stat analysis
+var avgs = [];
 
 function run() {
     if (window.gameManager.isGameTerminated() || (arraysEquality(previousThreeGrids[0], previousThreeGrids[1], previousThreeGrids[2]))) {
@@ -87,6 +89,7 @@ function run() {
         genetics.calcStats();
         var avg = genetics.averageFitness;
         console.log('Average: ' + avg);
+        avgs.push(avg);
         evolve();
         networkIndex = 0;
         generation++;
@@ -99,4 +102,4 @@ function run() {
     previousThreeGrids.push(getGrid());
     setTimeout(run, delay);
 }
-setTimeout(run, 20);
+setTimeout(run, 200);
