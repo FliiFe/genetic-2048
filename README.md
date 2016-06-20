@@ -6,7 +6,7 @@ It works using both neural networks, and genetic evolution. It starts knowing no
 
 ## Setting up the project
 
-Since this project relies on [2048](https://github.com/gabrielecirulli/2048) and [Brainwave](https://github.com/zefman/Brainwave), I didn't want to include their code directly into my repository (which would make it look like it is mine). Instead, I made submodules.
+Since this project relies on [2048](https://github.com/gabrielecirulli/2048) and [reinforcejs](https://github.com/karpathy/reinforcejs), I didn't want to include their code directly into my repository (which would make it look like it is mine). Instead, I made them submodules.
 
 #### Step 0, prerequisites
 
@@ -68,3 +68,4 @@ If you want to build without serving files, use
 ```
 grunt build
 ```
+
