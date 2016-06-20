@@ -26,7 +26,9 @@
             data = JSON.parse(content);
             recalculate();
             //TODO: Keep zoom after redraw ?
-            Plotly.redraw(plot);
+            //Plotly.redraw(plot);
+
+            Plotly.newPlot(plot, traces, layout);
         });
 
         var plot = document.getElementById('plot');
@@ -102,6 +104,7 @@
                 showlegend: false
             }
         }
+        recalculate();
 
         Plotly.newPlot(plot, traces, layout);
     </script>
