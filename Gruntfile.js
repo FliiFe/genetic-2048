@@ -38,9 +38,9 @@ module.exports = function (grunt) {
                 src: ['*.html'],
                 dest: 'build/'
             },
-            brainwave: {
+            reinforce: {
                 expand: true,
-                cwd: 'Brainwave/build/',
+                cwd: 'reinforcejs/lib/',
                 src: ['*.js'],
                 dest: 'build/js/'
             }
@@ -57,7 +57,7 @@ module.exports = function (grunt) {
         }
     });
 
-    grunt.registerTask('build', 'Build the project', ['copy:main', 'copy:js', 'copy:html', 'copy:brainwave']);
+    grunt.registerTask('build', 'Build the project', ['copy:main', 'copy:js', 'copy:html', 'copy:reinforce']);
 
     grunt.registerTask('default', ['clean', 'build', 'connect:server', 'watch']);
     grunt.registerTask('statsServer', 'Run a server to show stats', function () {
