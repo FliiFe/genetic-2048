@@ -1,6 +1,3 @@
-[submodule "Brainwave"]
-	path = Brainwave
-	url = https://github.com/zefman/Brainwave.git
 [submodule "2048"]
 	path = 2048
 	url = https://github.com/gabrielecirulli/2048.git
