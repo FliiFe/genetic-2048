@@ -35,35 +35,53 @@ function getBestTileFromGrid(grid) {
 // 0 = up, 2 = down
 // 1 = right, 3 = left
 function move(mv) {
-    var max = Math.max.apply(this, mv);
-    var move = mv.indexOf(max);
-    window.gameManager.inputManager.emit('move', Math.floor(move));
+    //var max = Math.max.apply(this, mv);
+    //var move = mv.indexOf(max);
+    window.gameManager.inputManager.emit('move', Math.floor(mv));
 }
 
 function tryAgain() {
     window.gameManager.restart();
 }
 
-var delay = 4;
+var delay = 10;
 
 // For stat analysis
 var avgs = [];
 
 var env = {};
-env.getNumStates = function() { return 8; }
-env.getMaxNumActions = function() { return 4; }
+env.getNumStates = function() { return 16; };
+env.getMaxNumActions = function() { return 4; };
 
 // create the DQN agent
-var spec = { alpha: 0.01 } // see full options on DQN page
-agent = new RL.DQNAgent(env, spec); 
 
-setInterval(function(){ // start the learning loop
-  var action = agent.act(s); // s is an array of length 8
-  var reward = 0; //... execute action in environment and get the reward
-  agent.learn(reward); // the agent improves its Q,policy,model, etc. reward is a float
-}, 0);
+var spec = {}
+spec.update = 'qlearn'; // qlearn | sarsa
+spec.gamma = 0.9; // discount factor, [0, 1)
+spec.epsilon = 0.2; // initial epsilon for epsilon-greedy policy, [0, 1)
+spec.alpha = 0.1; // value function learning rate
+spec.experience_add_every = 5; // number of time steps before we add another experience to replay memory
+spec.experience_size = 10000; // size of experience
+spec.learning_steps_per_iteration = 5;
+spec.tderror_clamp = 1.0; // for robustness
+spec.num_hidden_units = 1000 // number of neurons in hidden layer
+agent = new RL.DQNAgent(env, spec);
+
+var bestTile = 0;
 
 function run() {
+    window.gameManager.actuator.clearMessage();
+    var action = agent.act(getGrid());
+    var previousScore = window.gameManager.score;
+    move(action);
+    var currentScore = window.gameManager.score;
+    if(window.gameManager.isGameTerminated()){
+    var currentBestTile = getBestTileFromGrid(getGrid());
+        bestTile = Math.max(bestTile, currentBestTile);
+        showAndSendAverage(window.gameManager.score);
+        tryAgain();
+    }
+    agent.learn(currentScore - previousScore);
     setTimeout(run, delay);
 }
 setTimeout(run, 200);
