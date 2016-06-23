@@ -17,7 +17,7 @@ function getGrid() {
 }
 
 function showAndSendAverage(avg) {
-    console.log('Average: ' + avg);
+    console.log('Score: ' + avg);
     //If stats server is not running, socket is an object with emit being an empty function.
     socket.emit('avgs', JSON.stringify(avgs));
 }
@@ -44,7 +44,7 @@ function tryAgain() {
     window.gameManager.restart();
 }
 
-var delay = 10;
+var delay = 2;
 
 // For stat analysis
 var avgs = [];
@@ -63,7 +63,7 @@ var spec = {};
 spec.update = 'qlearn'; // qlearn | sarsa
 spec.gamma = 0.9; // discount factor, [0, 1)
 spec.epsilon = 0.2; // initial epsilon for epsilon-greedy policy, [0, 1)
-spec.alpha = 0.1; // value function learning rate
+spec.alpha = 0.01; // value function learning rate
 spec.experience_add_every = 5; // number of time steps before we add another experience to replay memory
 spec.experience_size = 10000; // size of experience
 spec.learning_steps_per_iteration = 5;
@@ -82,6 +82,7 @@ function run() {
     if (window.gameManager.isGameTerminated()) {
         var currentBestTile = getBestTileFromGrid(getGrid());
         bestTile = Math.max(bestTile, currentBestTile);
+        avgs.push(window.gameManager.score);
         showAndSendAverage(window.gameManager.score);
         tryAgain();
     }
