@@ -34,6 +34,7 @@
         var plot = document.getElementById('plot');
         var layout = {};
         var traces = [];
+
         function recalculate() {
             function range(a, b, step) {
                 var A = [];
@@ -55,6 +56,10 @@
                 return A;
             }
 
+            function globalAverage(array) {
+                return averageEvery(array.length, array)[1];
+            }
+
             function averageEvery(x, array) {
                 var result = [x];
                 for (var i = 0; i < Math.floor(array.length / x); i++) {
@@ -67,7 +72,7 @@
             }
 
             var data2 = averageEvery(40, data);
-            data2.splice(1, 0, 0);
+            data2.splice(1, 0, data2[1]);
 
             var trace1 = {
                 x: range(1, data.length, 1),
@@ -95,9 +100,18 @@
                 mode: 'lines',
                 hoverinfo: "y"
             };
+            var trace3 = {
+                x: [0, data.length],
+                y: [globalAverage(data), globalAverage(data)],
+                type: 'scatter',
+                line: {
+                    width: 1.5
+                },
+                mode: 'lines'
+            };
 
 
-            traces = [trace1, trace2];
+            traces = [trace1, trace2, trace3];
 
             layout = {
                 title: 'Average fitness per population over generations',
