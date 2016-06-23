@@ -82,7 +82,8 @@
                     width: 0.5,
                     shape: 'spline'
                 },
-                hoverinfo: "none"
+                hoverinfo: "none",
+                name: 'Raw data'
             };
             var avgrange = range(data2[0] / 2, data.length, data2[0]);
             avgrange.splice(0, 0, 0);
@@ -98,7 +99,8 @@
                     shape: 'spline'
                 },
                 mode: 'lines',
-                hoverinfo: "y"
+                hoverinfo: 'y',
+                name: 'Averaged raw data'
             };
             var trace3 = {
                 x: [0, data.length],
@@ -107,15 +109,16 @@
                 line: {
                     width: 1.5
                 },
-                mode: 'lines'
+                mode: 'lines',
+                name: 'Global average'
             };
 
 
             traces = [trace1, trace2, trace3];
 
             layout = {
-                title: 'Average fitness per population over generations',
-                showlegend: false
+                title: 'Network\'s score over played games.',
+                showlegend: true
             }
         }
         recalculate();
