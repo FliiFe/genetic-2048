@@ -1,5 +1,7 @@
 ## Learning algorithm for 2048
 
+**Note: This is no longer maintained, and the neural network does not learn. This was a failed attempt to Machine learning**
+
 This project is an attempt to make a computer learn how to play [2048](https://github.com/gabrielecirulli/2048), and hopefully extend this learning ability to other games.
 
 It works using both neural networks, and genetic evolution. It starts knowing nothing of the game, and by trial and error, random mutations and evolution, learns how to get better.
